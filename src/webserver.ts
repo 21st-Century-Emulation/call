@@ -23,8 +23,8 @@ router.post("/api/v1/execute", async (context: Context) => {
   const result = context.request.body();
   const value = await result.value;
 
-  const addressHighByteStr = context.request.url.searchParams.get("highByte");
-  const addressLowByteStr = context.request.url.searchParams.get("lowByte");
+  const addressHighByteStr = context.request.url.searchParams.get("operand2");
+  const addressLowByteStr = context.request.url.searchParams.get("operand1");
   if (addressHighByteStr == null || addressLowByteStr == null) {
     context.response.body = "Missing query string high byte and low byte";
     context.response.status = 400;
