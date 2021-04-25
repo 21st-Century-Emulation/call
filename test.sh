@@ -4,9 +4,9 @@ docker run --rm --name call -d -p 8080:8080 -e WRITE_MEMORY_API=http://localhost
 sleep 5
 RESULT=`curl -s --header "Content-Type: application/json" \
   --request POST \
-  --data '{"id":"abcd", "opcode":196,"state":{"a":181,"b":0,"c":0,"d":0,"e":0,"h":25,"l":10,"flags":{"sign":false,"zero":false,"auxCarry":false,"parity":false,"carry":false},"programCounter":0,"stackPointer":0,"cycles":0}}' \
+  --data '{"id":"abcd", "opcode":196,"state":{"a":181,"b":0,"c":0,"d":0,"e":0,"h":25,"l":10,"flags":{"sign":false,"zero":false,"auxCarry":false,"parity":false,"carry":false},"programCounter":0,"stackPointer":0,"cycles":0,"interruptsEnabled":true}}' \
   http://localhost:8080/api/v1/execute\?operand2=10\&operand1=7`
-EXPECTED='{"id":"abcd", "opcode":196,"state":{"a":181,"b":0,"c":0,"d":0,"e":0,"h":25,"l":10,"flags":{"sign":false,"zero":false,"auxCarry":false,"parity":false,"carry":false},"programCounter":2567,"stackPointer":65533,"cycles":17}}'
+EXPECTED='{"id":"abcd", "opcode":196,"state":{"a":181,"b":0,"c":0,"d":0,"e":0,"h":25,"l":10,"flags":{"sign":false,"zero":false,"auxCarry":false,"parity":false,"carry":false},"programCounter":2567,"stackPointer":65533,"cycles":17,"interruptsEnabled":true}}'
 
 docker kill call
 
