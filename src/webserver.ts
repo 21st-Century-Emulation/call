@@ -82,13 +82,11 @@ router.post("/api/v1/execute", async (context: Context) => {
     value["state"]["cycles"] += 17; // 17 cycles for performed call
 
     // Push PC high byte
-    value["state"]["stackPointer"] -= 1;
-    if (value["state"]["stackPointer"] < 0) value["state"]["stackPointer"] += 0xFFFF;
+    value["state"]["stackPointer"] = (value["state"]["stackPointer"] - 1) & 0xFFFF;
     const highBytePush = fetch(`${WRITE_MEMORY_API}?id=${value["id"]}&address=${value["state"]["stackPointer"]}&value=${value["state"]["programCounter"] >> 8}`);
 
     // Push PC low byte
-    value["state"]["stackPointer"] = value["state"]["stackPointer"] -= 1;
-    if (value["state"]["stackPointer"] < 0) value["state"]["stackPointer"] += 0xFFFF;
+    value["state"]["stackPointer"] = (value["state"]["stackPointer"] - 1) & 0xFFFF;
     const lowBytePush = fetch(`${WRITE_MEMORY_API}?id=${value["id"]}&address=${value["state"]["stackPointer"]}&value=${value["state"]["programCounter"] & 0xFF}`);
 
     await Promise.all([highBytePush, lowBytePush]);
